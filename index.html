@@ -6,7 +6,7 @@
 <title>BotConversa Dashboard · Arquiter</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/recharts@2.1.16/umd/Recharts.min.js"></script>
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -71,7 +71,7 @@ button:hover{background:var(--surface2)}
 <div class="app" id="root"></div>
 <script>
 const{useState,useMemo,useCallback,useEffect}=React;
-const{BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer}=Recharts;
+
 
 const EXCLUDED=new Set(["deletar","WhatsAppsInválidos","TESTE"]);
 const INTERNAL=new Set(["Fornecedor","SEBRAE","ARQUITETOS","Interno","Plataforma"]);
