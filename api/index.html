@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BotConversa Dashboard · Arquiter</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.5.0/Recharts.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f9f9f8;--surface:#fff;--surface2:#f4f4f2;--border:rgba(0,0,0,.1);
+  --text:#111;--text2:#555;--text3:#999;--up:#1d9e75;--dn:#d85a30;
+  --radius:8px;--radius-lg:12px
+}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:900px;margin:0 auto;padding:2rem 1.25rem}
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:8px}
+.logo{font-size:16px;font-weight:500}.logo span{color:var(--text2);font-weight:400}
+.hd-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
+@media(max-width:600px){.g4{grid-template-columns:repeat(2,1fr)}}
+.mc{background:var(--surface2);border-radius:var(--radius);padding:.875rem 1rem}
+.ml{font-size:10px;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.mv{font-size:24px;font-weight:500;line-height:1;color:var(--text)}
+.ms{font-size:11px;color:var(--text3);margin-top:3px}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.flt{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.fl2{font-size:12px;color:var(--text2)}
+.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;overflow-x:auto}
+.tb{padding:8px 14px;font-size:12px;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;flex-shrink:0}
+.tb.on{color:var(--text);border-bottom-color:var(--text);font-weight:500}
+.tb:hover:not(.on){color:var(--text)}
+.cd{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.125rem;margin-bottom:10px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
+@media(max-width:600px){.g2{grid-template-columns:1fr}}
+.sl{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
+.cr{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.cn{font-size:11px;color:var(--text2);width:110px;flex-shrink:0}
+.tk{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.fl{height:100%;border-radius:2px;transition:width .5s ease}
+.cv{font-size:12px;font-weight:500;color:var(--text);width:28px;text-align:right}
+.cp{font-size:10px;color:var(--text3);width:30px;text-align:right}
+.sr2{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.sr2:last-child{border-bottom:none}
+.bdg{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px}
+.bup{background:rgba(29,158,117,.12);color:var(--up)}
+.bdn{background:rgba(216,90,48,.12);color:var(--dn)}
+.bnt{background:var(--surface2);color:var(--text2)}
+.cmpr{display:grid;grid-template-columns:120px 44px 16px 44px 60px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
+.cmpr:last-child{border-bottom:none}
+.cmv{font-size:16px;font-weight:500;text-align:center}
+.lrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.li{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2)}
+.lsq{width:9px;height:9px;border-radius:1px;flex-shrink:0}
+.emp{text-align:center;padding:3rem 1rem}
+.empt{font-size:16px;font-weight:500;margin-bottom:8px}
+.emps{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:1.25rem}
+.emph{font-size:10px;color:var(--text3);margin-top:12px;font-family:monospace}
+.prog{width:100%;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-top:12px}
+.progi{height:100%;background:#3266ad;border-radius:2px;transition:width .2s}
+.prgt{font-size:11px;color:var(--text3);margin-top:6px;text-align:center}
+input[type=date],select{font-size:12px;padding:5px 9px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text)}
+button{font-size:12px;padding:5px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text);cursor:pointer}
+button:hover{background:var(--surface2)}
+.ft{font-size:10px;color:var(--text3);text-align:center;margin-top:1.5rem;padding-bottom:1rem}
+</style>
+</head>
+<body>
+<div class="app" id="root"></div>
+<script>
+const{useState,useMemo,useCallback,useEffect}=React;
+const{BarChart,Bar,XAxis,YAxis,Tooltip,ResponsiveContainer}=Recharts;
+
+const EXCLUDED=new Set(["deletar","WhatsAppsInválidos","TESTE"]);
+const INTERNAL=new Set(["Fornecedor","SEBRAE","ARQUITETOS","Interno","Plataforma"]);
+const STATUS=new Set(["Vendas","Qualificado","Desqualificado","Sem Interesse","Cliente","Fechados","LEAD"]);
+const SECTOR=new Set(["Setor Restaurante","Setor Restaurantes II","Restaurantes","Clínicas","Saúde e estética","Franquia","Franquias","Petshop e Clínica Veterinária","Vestuário","Produtos Naturais","Quiosque","Confeitarias e Docerias","Airbnb (locação)","Prédio comercial","Imobiliária","Papelarias e Afins","Padaria","Fachada","Cosméticos e Produtos de beleza","sorveteria","Distribuidora","Espaço instagramável","Material de construção e obra","Suplementos","Comercial","Escolas e Rede de Ensino","Fluxo IA para Restaurantes","IA","Recepção","Visualizou o site"]);
+const CHANNELS={"Inbound":["Inbound"],"Outbound/SDR":["Outbound","SDR"],"Paid Ads":["Google Ads","Meta Ads"],"Agendor":["Agendor"],"Black Friday":["blackfriday25"],"Reativação":["Reativação"],"Indicação":["Indicado","Instagram"]};
+const CH_COLOR={"Inbound":"#3266ad","Outbound/SDR":"#d85a30","Paid Ads":"#1d9e75","Agendor":"#7f77dd","Black Friday":"#ba7517","Reativação":"#3b6d11","Indicação":"#185fa5","Sem tag":"#888780","Outros":"#b4b2a9"};
+const INT_COLOR=["#7f77dd","#185fa5","#1d9e75","#d85a30","#888780"];
+const INT_TAGS=["Fornecedor","SEBRAE","ARQUITETOS","Interno","Plataforma"];
+const ALL_CH=[...Object.keys(CHANNELS),"Sem tag","Outros"];
+const MS=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
+
+function classify(tags){
+  if(!tags?.length)return"Sem tag";
+  for(const[ch,ts]of Object.entries(CHANNELS))if(tags.some(t=>ts.includes(t)))return ch;
+  return"Outros";
+}
+function ym(d){return d?.slice(0,7)||"";}
+function fmtM(s){if(!s)return"";const[y,m]=s.split("-");return`${MS[+m-1]}/${y.slice(2)}`;}
+
+function proc(data,from,to){
+  let rows=data;
+  if(from)rows=rows.filter(s=>(s.created_at||"")>=from);
+  if(to)rows=rows.filter(s=>(s.created_at||"")<=to+"T23:59:59");
+  const excl=rows.filter(s=>(s.tags||[]).some(t=>EXCLUDED.has(t)));
+  const valid=rows.filter(s=>!(s.tags||[]).some(t=>EXCLUDED.has(t)));
+  const intr=valid.filter(s=>(s.tags||[]).some(t=>INTERNAL.has(t)));
+  const pipe=valid.filter(s=>!(s.tags||[]).some(t=>INTERNAL.has(t)));
+  const now=new Date();
+  const curYM=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+  const pr=new Date(now.getFullYear(),now.getMonth()-1);
+  const prvYM=`${pr.getFullYear()}-${String(pr.getMonth()+1).padStart(2,"0")}`;
+  const thisM=pipe.filter(s=>(s.created_at||"").startsWith(curYM)).length;
+  const lastM=pipe.filter(s=>(s.created_at||"").startsWith(prvYM)).length;
+  const mom=lastM>0?+((thisM-lastM)/lastM*100).toFixed(1):null;
+  const appt=pipe.filter(s=>{const v=s.variables||{};return v.DiaAgendamento;}).length;
+  const chC={},stC={},secC={},intC={};
+  pipe.forEach(s=>{
+    const c=classify(s.tags);chC[c]=(chC[c]||0)+1;
+    (s.tags||[]).forEach(t=>{
+      if(STATUS.has(t))stC[t]=(stC[t]||0)+1;
+      if(SECTOR.has(t))secC[t]=(secC[t]||0)+1;
+    });
+  });
+  intr.forEach(s=>(s.tags||[]).forEach(t=>{if(INTERNAL.has(t))intC[t]=(intC[t]||0)+1;}));
+  const mmMap={};
+  pipe.forEach(s=>{
+    const m=ym(s.created_at);if(!m)return;
+    if(!mmMap[m])mmMap[m]={m};
+    const c=classify(s.tags);mmMap[m][c]=(mmMap[m][c]||0)+1;
+    mmMap[m].total=(mmMap[m].total||0)+1;
+  });
+  intr.forEach(s=>{
+    const m=ym(s.created_at);if(!m)return;
+    if(!mmMap[m])mmMap[m]={m};
+    (s.tags||[]).forEach(t=>{if(INTERNAL.has(t))mmMap[m]["i_"+t]=(mmMap[m]["i_"+t]||0)+1;});
+  });
+  const monthly=Object.values(mmMap).sort((a,b)=>a.m.localeCompare(b.m));
+  return{total:valid.length,pipeline:pipe.length,internal:intr.length,excluded:excl.length,thisM,lastM,mom,appt,chC,stC,secC,intC,monthly,months:monthly.map(m=>m.m)};
+}
+
+const TT=({active,payload,label})=>{
+  if(!active||!payload?.length)return null;
+  return React.createElement("div",{style:{background:"#fff",border:"1px solid rgba(0,0,0,.12)",borderRadius:8,padding:"6px 10px",fontSize:11,boxShadow:"0 2px 8px rgba(0,0,0,.08)"}},
+    React.createElement("div",{style:{fontWeight:500,marginBottom:4}},fmtM(label)||label),
+    payload.filter(p=>p.value>0).map(p=>React.createElement("div",{key:p.dataKey,style:{display:"flex",gap:8,alignItems:"center",color:"#666",marginBottom:2}},
+      React.createElement("span",{style:{width:8,height:8,borderRadius:1,background:p.fill,display:"inline-block"}}),
+      React.createElement("span",null,p.name||p.dataKey,": "),
+      React.createElement("span",{style:{fontWeight:500,color:"#111"}},p.value)
+    ))
+  );
+};
+
+function App(){
+  const[data,setData]=useState(null);
+  const[loading,setLoading]=useState(false);
+  const[progress,setProgress]=useState(0);
+  const[total,setTotal]=useState(0);
+  const[err,setErr]=useState(null);
+  const[tab,setTab]=useState("pipeline");
+  const[from,setFrom]=useState("");
+  const[to,setTo]=useState("");
+  const[cmp,setCmp]=useState(["",""]);
+  const[lastUpd,setLastUpd]=useState(null);
+
+  const loadFile=useCallback(e=>{
+    const f=e.target.files[0];if(!f)return;
+    setLoading(true);
+    const r=new FileReader();
+    r.onload=ev=>{
+      try{const j=JSON.parse(ev.target.result);setData(Array.isArray(j)?j:j.results||[]);setErr(null);setLastUpd(new Date());}
+      catch{setErr("Erro ao parsear JSON.");}
+      setLoading(false);
+    };
+    r.readAsText(f);
+  },[]);
+
+  const loadAPI=useCallback(async()=>{
+    setLoading(true);setErr(null);setProgress(0);setTotal(0);
+    try{
+      const all=[];let page=1;let tot=null;
+      while(true){
+        const res=await fetch(`/api/subscribers?page=${page}`);
+        if(!res.ok)throw new Error(`HTTP ${res.status}`);
+        const j=await res.json();
+        if(j.error)throw new Error(j.error);
+        const rows=j.results||j;
+        all.push(...rows);
+        if(!tot&&j.count)tot=j.count;
+        if(tot)setProgress(Math.round((all.length/tot)*100));
+        setTotal(all.length);
+        if(!j.next||!rows.length)break;
+        page++;
+      }
+      setData(all);setErr(null);setLastUpd(new Date());
+    }catch(e){setErr(`Erro: ${e.message}`);}
+    setLoading(false);setProgress(0);
+  },[]);
+
+  const p=useMemo(()=>data?proc(data,from,to):null,[data,from,to]);
+
+  const comparison=useMemo(()=>{
+    if(!p||!cmp[0]||!cmp[1])return null;
+    const[m1,m2]=[...cmp].sort();
+    const d1=p.monthly.find(m=>m.m===m1)||{};
+    const d2=p.monthly.find(m=>m.m===m2)||{};
+    return ALL_CH.map(ch=>({ch,v1:d1[ch]||0,v2:d2[ch]||0})).filter(r=>r.v1||r.v2);
+  },[p,cmp]);
+
+  const e=React.createElement;
+
+  if(!data||loading)return e("div",null,
+    e("div",{className:"hd"},e("div",{className:"logo"},"BotConversa ",e("span",null,"/ Arquiter"))),
+    e("div",{className:"cd"},
+      e("div",{className:"emp"},
+        e("div",{style:{fontSize:28,marginBottom:10}},"📊"),
+        e("div",{className:"empt"},"BotConversa Dashboard"),
+        e("div",{className:"emps"},loading?`Carregando dados... ${total>0?total+" registros":""}`:"Busque os dados via API ou carregue um arquivo JSON exportado."),
+        loading&&e("div",null,
+          e("div",{className:"prog"},e("div",{className:"progi",style:{width:`${progress||5}%`}})),
+          e("div",{className:"prgt"},progress?`${progress}%`:"iniciando...")
+        ),
+        !loading&&e("div",{style:{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}},
+          e("button",{onClick:loadAPI,style:{fontWeight:500}},"⚡ Buscar via API"),
+          e("label",{style:{cursor:"pointer"}},
+            e("input",{type:"file",accept:".json",onChange:loadFile,style:{display:"none"}}),
+            e("button",{style:{pointerEvents:"none"}},"📁 Carregar JSON local")
+          )
+        ),
+        err&&e("div",{style:{color:"#d85a30",fontSize:12,marginTop:12,lineHeight:1.5,padding:"8px 12px",background:"rgba(216,90,48,.08)",borderRadius:6}},err)
+      )
+    ),
+    e("div",{className:"ft"},"Arquiter · BotConversa Dashboard")
+  );
+
+  const chArr=Object.entries(p.chC).sort((a,b)=>b[1]-a[1]);
+
+  return e("div",null,
+    e("div",{className:"hd"},
+      e("div",{className:"logo"},"BotConversa ",e("span",null,"/ Arquiter")),
+      e("div",{className:"hd-right"},
+        lastUpd&&e("span",{style:{fontSize:10,color:"var(--text3)"}},`Atualizado ${lastUpd.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`),
+        e("button",{onClick:loadAPI},"⚡ Refresh"),
+        e("label",{style:{cursor:"pointer"}},
+          e("input",{type:"file",accept:".json",onChange:loadFile,style:{display:"none"}}),
+          e("button",{style:{pointerEvents:"none"}},"📁 JSON local")
+        )
+      )
+    ),
+
+    e("div",{className:"flt"},
+      e("span",{className:"fl2"},"Período:"),
+      e("input",{type:"date",value:from,onChange:ev=>setFrom(ev.target.value)}),
+      e("span",{className:"fl2"},"até"),
+      e("input",{type:"date",value:to,onChange:ev=>setTo(ev.target.value)}),
+      (from||to)&&e("button",{onClick:()=>{setFrom("");setTo("")}},"× Limpar")
+    ),
+
+    e("div",{className:"g4"},
+      e("div",{className:"mc"},e("div",{className:"ml"},"Leads válidos"),e("div",{className:"mv"},p.pipeline.toLocaleString("pt-BR")),e("div",{className:"ms"},`${p.excluded} excluídos`)),
+      e("div",{className:"mc"},e("div",{className:"ml"},"Novos este mês"),e("div",{className:"mv"},p.thisM),e("div",{className:"ms"},`vs ${p.lastM} mês anterior`)),
+      e("div",{className:"mc"},e("div",{className:"ml"},"Variação MoM"),e("div",{className:`mv ${p.mom>0?"up":p.mom<0?"dn":""}`},p.mom!==null?`${p.mom>0?"+":""}${p.mom}%`:"—"),e("div",{className:"ms"},"crescimento mensal")),
+      e("div",{className:"mc"},e("div",{className:"ml"},"Com agendamento"),e("div",{className:"mv"},p.appt),e("div",{className:"ms"},`${p.pipeline>0?((p.appt/p.pipeline)*100).toFixed(1):0}% da base`))
+    ),
+
+    e("div",{className:"tabs"},
+      [["pipeline","Pipeline"],["mensal","Mensal"],["comparacao","Comparação"],["internos","Base interna"],["setores","Setores"]].map(([k,l])=>
+        e("button",{key:k,className:`tb ${tab===k?"on":""}`,onClick:()=>setTab(k)},l)
+      )
+    ),
+
+    tab==="pipeline"&&e("div",{className:"g2"},
+      e("div",{className:"cd"},
+        e("div",{className:"sl"},"Canais de aquisição"),
+        chArr.map(([name,val])=>e("div",{key:name,className:"cr"},
+          e("div",{className:"cn"},name),
+          e("div",{className:"tk"},e("div",{className:"fl",style:{width:`${(val/p.pipeline)*100}%`,background:CH_COLOR[name]||"#888"}})),
+          e("div",{className:"cv"},val),
+          e("div",{className:"cp"},`${((val/p.pipeline)*100).toFixed(0)}%`)
+        ))
+      ),
+      e("div",{className:"cd"},
+        e("div",{className:"sl"},"Status dos leads"),
+        Object.entries(p.stC).sort((a,b)=>b[1]-a[1]).map(([t,c])=>e("div",{key:t,className:"sr2"},
+          e("span",{style:{fontSize:13}},t),
+          e("span",{style:{fontSize:13,fontWeight:500}},c)
+        )),
+        !Object.keys(p.stC).length&&e("div",{style:{fontSize:12,color:"var(--text3)"}},"Sem dados de status")
+      )
+    ),
+
+    tab==="mensal"&&e("div",null,
+      e("div",{className:"cd"},
+        e("div",{className:"sl"},"Volume mensal total"),
+        e(ResponsiveContainer,{width:"100%",height:190},
+          e(BarChart,{data:p.monthly,margin:{top:4,right:4,left:-18,bottom:0}},
+            e(XAxis,{dataKey:"m",tickFormatter:fmtM,tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false,interval:0}),
+            e(YAxis,{tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false}),
+            e(Tooltip,{content:e(TT)}),
+            e(Bar,{dataKey:"total",fill:"#3266ad",radius:[3,3,0,0]})
+          )
+        )
+      ),
+      e("div",{className:"cd"},
+        e("div",{className:"sl"},"Por canal × mês"),
+        e("div",{className:"lrow"},
+          ALL_CH.map(ch=>e("div",{key:ch,className:"li"},e("span",{className:"lsq",style:{background:CH_COLOR[ch]}}),ch))
+        ),
+        e(ResponsiveContainer,{width:"100%",height:210},
+          e(BarChart,{data:p.monthly,margin:{top:4,right:4,left:-18,bottom:0}},
+            e(XAxis,{dataKey:"m",tickFormatter:fmtM,tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false,interval:0}),
+            e(YAxis,{tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false}),
+            e(Tooltip,{content:e(TT)}),
+            ALL_CH.map(ch=>e(Bar,{key:ch,dataKey:ch,name:ch,stackId:"a",fill:CH_COLOR[ch]}))
+          )
+        )
+      )
+    ),
+
+    tab==="comparacao"&&e("div",null,
+      e("div",{className:"cd",style:{marginBottom:10}},
+        e("div",{className:"sl"},"Selecione dois meses para comparar"),
+        e("div",{style:{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}},
+          e("select",{value:cmp[0],onChange:ev=>setCmp([ev.target.value,cmp[1]])},
+            e("option",{value:""},"Mês 1"),
+            p.months.map(m=>e("option",{key:m,value:m},fmtM(m)))
+          ),
+          e("span",{style:{fontSize:12,color:"var(--text2)"}},"vs"),
+          e("select",{value:cmp[1],onChange:ev=>setCmp([cmp[0],ev.target.value])},
+            e("option",{value:""},"Mês 2"),
+            p.months.map(m=>e("option",{key:m,value:m},fmtM(m)))
+          )
+        )
+      ),
+      comparison?e("div",{className:"cd"},
+        e("div",{className:"sl"},`${fmtM([...cmp].sort()[0])} vs ${fmtM([...cmp].sort()[1])}`),
+        comparison.map(r=>e("div",{key:r.ch,className:"cmpr"},
+          e("span",{style:{fontSize:11,color:"var(--text2)"}},r.ch),
+          e("span",{className:"cmv",style:{color:"var(--text2)"}},r.v1),
+          e("span",{style:{fontSize:10,color:"var(--text3)",textAlign:"center"}},"→"),
+          e("span",{className:"cmv"},r.v2),
+          e("span",{className:`bdg ${r.v2>r.v1?"bup":r.v2<r.v1?"bdn":"bnt"}`},`${r.v2>r.v1?"+":""}${r.v2-r.v1}`)
+        ))
+      ):e("div",{className:"cd",style:{textAlign:"center",padding:"2rem",color:"var(--text3)",fontSize:13}},"Selecione dois meses acima")
+    ),
+
+    tab==="internos"&&e("div",{className:"g2"},
+      e("div",{className:"cd"},
+        e("div",{className:"sl"},"Base interna Arquiter"),
+        INT_TAGS.map((tag,i)=>{
+          const c=p.intC[tag]||0;
+          const max=Math.max(...INT_TAGS.map(t=>p.intC[t]||0),1);
+          return e("div",{key:tag,className:"cr"},
+            e("div",{className:"cn"},tag),
+            e("div",{className:"tk"},e("div",{className:"fl",style:{width:`${(c/max)*100}%`,background:INT_COLOR[i]}})),
+            e("div",{className:"cv"},c),
+            e("div",{className:"cp"},`${p.internal>0?((c/p.internal)*100).toFixed(0):0}%`)
+          );
+        }),
+        e("div",{style:{marginTop:12,paddingTop:10,borderTop:"1px solid var(--border)",display:"flex",justifyContent:"space-between"}},
+          e("span",{style:{fontSize:12,color:"var(--text2)"}},"Total base interna"),
+          e("span",{style:{fontSize:15,fontWeight:500}},p.internal)
+        )
+      ),
+      e("div",{className:"cd"},
+        e("div",{className:"sl"},"Evolução mensal"),
+        e("div",{className:"lrow"},
+          INT_TAGS.map((t,i)=>e("div",{key:t,className:"li"},e("span",{className:"lsq",style:{background:INT_COLOR[i]}}),t))
+        ),
+        e(ResponsiveContainer,{width:"100%",height:205},
+          e(BarChart,{data:p.monthly,margin:{top:4,right:4,left:-18,bottom:0}},
+            e(XAxis,{dataKey:"m",tickFormatter:fmtM,tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false,interval:0}),
+            e(YAxis,{tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false}),
+            e(Tooltip,{content:e(TT)}),
+            INT_TAGS.map((t,i)=>e(Bar,{key:t,dataKey:"i_"+t,name:t,stackId:"i",fill:INT_COLOR[i]}))
+          )
+        )
+      )
+    ),
+
+    tab==="setores"&&e("div",{className:"cd"},
+      e("div",{className:"sl"},"Segmentação por setor"),
+      Object.entries(p.secC).sort((a,b)=>b[1]-a[1]).map(([tag,count])=>{
+        const max=Math.max(...Object.values(p.secC),1);
+        return e("div",{key:tag,className:"cr"},
+          e("div",{className:"cn",style:{width:220,fontSize:11}},tag),
+          e("div",{className:"tk"},e("div",{className:"fl",style:{width:`${(count/max)*100}%`,background:"#1d9e75"}})),
+          e("div",{className:"cv"},count)
+        );
+      }),
+      !Object.keys(p.secC).length&&e("div",{style:{fontSize:12,color:"var(--text3)",textAlign:"center",padding:"1.5rem"}},"Sem dados de setor")
+    ),
+
+    e("div",{className:"ft"},`Arquiter · BotConversa Dashboard · ${new Date().toLocaleDateString("pt-BR")}`)
+  );
+}
+
+ReactDOM.render(React.createElement(App),document.getElementById("root"));
+</script>
+</body>
+</html>
