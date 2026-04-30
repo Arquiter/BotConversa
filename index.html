@@ -207,14 +207,21 @@ function Modal({title,leads,onClose}){
   const[q,setQ]=useState("");
   const filtered=q?leads.filter(l=>(l.full_name||"").toLowerCase().includes(q.toLowerCase())||(l.phone||"").includes(q)):leads;
   const sorted=[...filtered].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
-  return e("div",{className:"overlay",onClick:e=>{if(e.target===e.currentTarget)onClose()}},
+  return e("div",{className:"overlay",onClick:ev=>{if(ev.target===ev.currentTarget)onClose()}},
     e("div",{className:"modal"},
       e("div",{className:"modal-hd"},
         e("div",null,
           e("div",{className:"modal-title"},title),
           e("div",{className:"modal-sub"},`${leads.length} leads`)
         ),
-        e("button",{onClick:onClose,style:{padding:"6px 12px"}},"✕ Fechar")
+        e("div",{style:{display:"flex",gap:8}},
+          e("a",{
+            href:"https://app.botconversa.com.br/188781/live-chat/all",
+            target:"_blank",rel:"noopener noreferrer",
+            style:{textDecoration:"none"}
+          },e("button",{className:"primary",style:{fontSize:12}},"💬 Ir para o Live Chat")),
+          e("button",{onClick:onClose,style:{padding:"6px 12px"}},"✕")
+        )
       ),
       e("div",{className:"modal-search"},
         e("input",{type:"text",placeholder:"Buscar por nome ou telefone...",value:q,onChange:ev=>setQ(ev.target.value),autoFocus:true})
@@ -229,13 +236,7 @@ function Modal({title,leads,onClose}){
             )
           ),
           e("div",null,
-            e("div",{className:"lead-date"},fmtDate(l.created_at)),
-            l.live_chat&&e("a",{
-              href:`https://backend.botconversa.com.br/${l.live_chat}`,
-              target:"_blank",rel:"noopener noreferrer",
-              className:"lead-link",
-              onClick:ev=>ev.stopPropagation()
-            },"Ver conversa →")
+            e("div",{className:"lead-date"},fmtDate(l.created_at))
           )
         ))
       )
