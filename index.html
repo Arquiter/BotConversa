@@ -286,28 +286,24 @@ function App(){
     tab==="mensal"&&e("div",null,
       e("div",{className:"cd"},
         e("div",{className:"sl"},"Volume mensal total"),
-        e(ResponsiveContainer,{width:"100%",height:190},
-          e(BarChart,{data:p.monthly,margin:{top:4,right:4,left:-18,bottom:0}},
-            e(XAxis,{dataKey:"m",tickFormatter:fmtM,tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false,interval:0}),
-            e(YAxis,{tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false}),
-            e(Tooltip,{content:e(TT)}),
-            e(Bar,{dataKey:"total",fill:"#3266ad",radius:[3,3,0,0]})
-          )
-        )
+        p.monthly.map(m=>{
+          const max=Math.max(...p.monthly.map(x=>x.total||0),1);
+          return e("div",{key:m.m,className:"cr"},
+            e("div",{className:"cn"},fmtM(m.m)),
+            e("div",{className:"tk"},e("div",{className:"fl",style:{width:`${Math.round((m.total||0)/max*100)}%`,background:"#3266ad"}})),
+            e("div",{className:"cv"},m.total||0)
+          );
+        })
       ),
       e("div",{className:"cd"},
         e("div",{className:"sl"},"Por canal × mês"),
-        e("div",{className:"lrow"},
-          ALL_CH.map(ch=>e("div",{key:ch,className:"li"},e("span",{className:"lsq",style:{background:CH_COLOR[ch]}}),ch))
-        ),
-        e(ResponsiveContainer,{width:"100%",height:210},
-          e(BarChart,{data:p.monthly,margin:{top:4,right:4,left:-18,bottom:0}},
-            e(XAxis,{dataKey:"m",tickFormatter:fmtM,tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false,interval:0}),
-            e(YAxis,{tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false}),
-            e(Tooltip,{content:e(TT)}),
-            ALL_CH.map(ch=>e(Bar,{key:ch,dataKey:ch,name:ch,stackId:"a",fill:CH_COLOR[ch]}))
+        e("div",{className:"lrow"},ALL_CH.map(ch=>e("div",{key:ch,className:"li"},e("span",{className:"lsq",style:{background:CH_COLOR[ch]}}),ch))),
+        p.monthly.map(m=>e("div",{key:m.m,style:{marginBottom:10}},
+          e("div",{style:{fontSize:11,color:"var(--text2)",marginBottom:4}},fmtM(m.m)),
+          e("div",{style:{display:"flex",height:16,borderRadius:3,overflow:"hidden",background:"var(--surface2)"}},
+            ALL_CH.filter(ch=>m[ch]>0).map(ch=>e("div",{key:ch,title:`${ch}: ${m[ch]}`,style:{width:`${Math.round((m[ch]||0)/(m.total||1)*100)}%`,background:CH_COLOR[ch],minWidth:2}}))
           )
-        )
+        ))
       )
     ),
 
@@ -358,17 +354,16 @@ function App(){
       ),
       e("div",{className:"cd"},
         e("div",{className:"sl"},"Evolução mensal"),
-        e("div",{className:"lrow"},
-          INT_TAGS.map((t,i)=>e("div",{key:t,className:"li"},e("span",{className:"lsq",style:{background:INT_COLOR[i]}}),t))
-        ),
-        e(ResponsiveContainer,{width:"100%",height:205},
-          e(BarChart,{data:p.monthly,margin:{top:4,right:4,left:-18,bottom:0}},
-            e(XAxis,{dataKey:"m",tickFormatter:fmtM,tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false,interval:0}),
-            e(YAxis,{tick:{fill:"#999",fontSize:10},axisLine:false,tickLine:false}),
-            e(Tooltip,{content:e(TT)}),
-            INT_TAGS.map((t,i)=>e(Bar,{key:t,dataKey:"i_"+t,name:t,stackId:"i",fill:INT_COLOR[i]}))
-          )
-        )
+        e("div",{className:"lrow"},INT_TAGS.map((t,i)=>e("div",{key:t,className:"li"},e("span",{className:"lsq",style:{background:INT_COLOR[i]}}),t))),
+        p.monthly.map(m=>{
+          const tot=INT_TAGS.reduce((s,t)=>s+(m["i_"+t]||0),0);
+          return tot>0?e("div",{key:m.m,style:{marginBottom:10}},
+            e("div",{style:{fontSize:11,color:"var(--text2)",marginBottom:4}},fmtM(m.m)),
+            e("div",{style:{display:"flex",height:14,borderRadius:3,overflow:"hidden",background:"var(--surface2)"}},
+              INT_TAGS.map((t,i)=>{ const v=m["i_"+t]||0; return v>0?e("div",{key:t,title:`${t}: ${v}`,style:{width:`${Math.round(v/tot*100)}%`,background:INT_COLOR[i],minWidth:2}}):null;})
+            )
+          ):null;
+        })
       )
     ),
 
