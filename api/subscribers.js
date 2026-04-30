@@ -1,5 +1,5 @@
 const API_KEY = "aaf774d8-f616-4178-9e8c-7fcf1936d161";
-const BASE = "https://backend.botconversa.com.br/api/v1";
+const BASE = "https://backend.botconversa.com.br/api/v1/webhook";
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
