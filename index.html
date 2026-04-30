@@ -6,80 +6,142 @@
 <title>BotConversa Dashboard · Arquiter</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f9f9f8;--surface:#fff;--surface2:#f4f4f2;--border:rgba(0,0,0,.1);
-  --text:#111;--text2:#555;--text3:#999;--up:#1d9e75;--dn:#d85a30;
-  --radius:8px;--radius-lg:12px
+  --bg:#f7f7f6;--surface:#fff;--surface2:#f2f2f0;--surface3:#e8e8e6;
+  --border:rgba(0,0,0,.08);--border2:rgba(0,0,0,.12);
+  --text:#111;--text2:#555;--text3:#999;
+  --up:#1d9e75;--dn:#d85a30;
+  --blue:#3266ad;--radius:10px;--radius-lg:14px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 1px 8px rgba(0,0,0,.04)
 }
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-.app{max-width:900px;margin:0 auto;padding:2rem 1.25rem}
-.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:8px}
-.logo{font-size:16px;font-weight:500}.logo span{color:var(--text2);font-weight:400}
-.hd-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:1.25rem}
-@media(max-width:600px){.g4{grid-template-columns:repeat(2,1fr)}}
-.mc{background:var(--surface2);border-radius:var(--radius);padding:.875rem 1rem}
-.ml{font-size:10px;color:var(--text2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
-.mv{font-size:24px;font-weight:500;line-height:1;color:var(--text)}
-.ms{font-size:11px;color:var(--text3);margin-top:3px}
-.up{color:var(--up)}.dn{color:var(--dn)}
-.flt{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
-.fl2{font-size:12px;color:var(--text2)}
-.tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.25rem;overflow-x:auto}
-.tb{padding:8px 14px;font-size:12px;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;flex-shrink:0}
-.tb.on{color:var(--text);border-bottom-color:var(--text);font-weight:500}
-.tb:hover:not(.on){color:var(--text)}
-.cd{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.125rem;margin-bottom:10px}
-.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:10px}
-@media(max-width:600px){.g2{grid-template-columns:1fr}}
-.sl{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px}
-.cr{display:flex;align-items:center;gap:8px;margin-bottom:9px}
-.cn{font-size:11px;color:var(--text2);width:110px;flex-shrink:0}
-.tk{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}
-.fl{height:100%;border-radius:2px;transition:width .5s ease}
-.cv{font-size:12px;font-weight:500;color:var(--text);width:28px;text-align:right}
-.cp{font-size:10px;color:var(--text3);width:30px;text-align:right}
-.sr2{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
-.sr2:last-child{border-bottom:none}
-.bdg{display:inline-block;padding:2px 8px;border-radius:5px;font-size:11px}
-.bup{background:rgba(29,158,117,.12);color:var(--up)}
-.bdn{background:rgba(216,90,48,.12);color:var(--dn)}
-.bnt{background:var(--surface2);color:var(--text2)}
-.cmpr{display:grid;grid-template-columns:120px 44px 16px 44px 60px;gap:8px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)}
-.cmpr:last-child{border-bottom:none}
-.cmv{font-size:16px;font-weight:500;text-align:center}
-.lrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.li{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2)}
-.lsq{width:9px;height:9px;border-radius:1px;flex-shrink:0}
-.emp{text-align:center;padding:3rem 1rem}
-.empt{font-size:16px;font-weight:500;margin-bottom:8px}
-.emps{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:1.25rem}
-.emph{font-size:10px;color:var(--text3);margin-top:12px;font-family:monospace}
-.prog{width:100%;height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-top:12px}
-.progi{height:100%;background:#3266ad;border-radius:2px;transition:width .2s}
-.prgt{font-size:11px;color:var(--text3);margin-top:6px;text-align:center}
-input[type=date],select{font-size:12px;padding:5px 9px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text)}
-button{font-size:12px;padding:5px 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text);cursor:pointer}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px}
+.app{max-width:1000px;margin:0 auto;padding:2.5rem 1.5rem}
+
+/* Header */
+.hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:12px}
+.logo{font-size:18px;font-weight:600;letter-spacing:-.3px}
+.logo span{color:var(--text2);font-weight:400}
+.hd-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.upd{font-size:12px;color:var(--text3)}
+
+/* Buttons */
+button{font-size:13px;padding:7px 14px;border:1px solid var(--border2);border-radius:8px;background:var(--surface);color:var(--text);cursor:pointer;font-weight:500;transition:background .15s}
 button:hover{background:var(--surface2)}
-.ft{font-size:10px;color:var(--text3);text-align:center;margin-top:1.5rem;padding-bottom:1rem}
+button.primary{background:var(--text);color:#fff;border-color:var(--text)}
+button.primary:hover{background:#333}
+
+/* Filter */
+.flt{display:flex;gap:10px;align-items:center;margin-bottom:1.75rem;flex-wrap:wrap}
+.flt label{font-size:13px;color:var(--text2);font-weight:500}
+input[type=date],select{font-size:13px;padding:6px 10px;border:1px solid var(--border2);border-radius:8px;background:var(--surface);color:var(--text)}
+
+/* Big numbers */
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:1.75rem}
+@media(max-width:640px){.g4{grid-template-columns:repeat(2,1fr)}}
+.mc{background:var(--surface);border-radius:var(--radius-lg);padding:1.25rem 1.25rem 1rem;box-shadow:var(--shadow);border:1px solid var(--border)}
+.ml{font-size:11px;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.mv{font-size:32px;font-weight:600;line-height:1;color:var(--text);letter-spacing:-.5px}
+.ms{font-size:12px;color:var(--text3);margin-top:5px}
+.up{color:var(--up)}.dn{color:var(--dn)}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:1.5px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;gap:4px}
+.tb{padding:10px 16px;font-size:14px;font-weight:500;color:var(--text2);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;margin-bottom:-1.5px;white-space:nowrap;flex-shrink:0;transition:color .15s}
+.tb.on{color:var(--text);border-bottom-color:var(--text)}
+.tb:hover:not(.on){color:var(--text)}
+
+/* Cards */
+.cd{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:12px;box-shadow:var(--shadow)}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+@media(max-width:640px){.g2{grid-template-columns:1fr}}
+.sl{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px}
+
+/* Channel rows */
+.cr{display:flex;align-items:center;gap:10px;margin-bottom:11px;cursor:pointer;border-radius:8px;padding:6px 8px;margin-left:-8px;margin-right:-8px;transition:background .12s}
+.cr:hover{background:var(--surface2)}
+.cr:last-child{margin-bottom:0}
+.cn{font-size:14px;color:var(--text);width:130px;flex-shrink:0;font-weight:500}
+.tk{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.fl{height:100%;border-radius:3px;transition:width .6s ease}
+.cv{font-size:14px;font-weight:600;color:var(--text);width:32px;text-align:right}
+.cp{font-size:12px;color:var(--text3);width:34px;text-align:right}
+
+/* Status rows */
+.sr2{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.sr2:last-child{border-bottom:none}
+
+/* Badges */
+.bdg{display:inline-block;padding:3px 9px;border-radius:6px;font-size:12px;font-weight:500}
+.bup{background:rgba(29,158,117,.1);color:var(--up)}
+.bdn{background:rgba(216,90,48,.1);color:var(--dn)}
+.bnt{background:var(--surface2);color:var(--text2)}
+
+/* Comparison */
+.cmpr{display:grid;grid-template-columns:130px 52px 20px 52px 64px;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--border)}
+.cmpr:last-child{border-bottom:none}
+.cmv{font-size:18px;font-weight:600;text-align:center}
+
+/* Legend */
+.lrow{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.li{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text2);font-weight:500}
+.lsq{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* Monthly bars */
+.mbar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.mbar-label{font-size:13px;color:var(--text2);width:52px;flex-shrink:0;font-weight:500}
+.mbar-track{flex:1;height:22px;background:var(--surface2);border-radius:5px;overflow:hidden;display:flex}
+.mbar-seg{height:100%;transition:width .4s;display:flex;align-items:center;justify-content:center}
+.mbar-val{font-size:13px;font-weight:600;color:var(--text);width:32px;text-align:right}
+
+/* Empty state */
+.emp{text-align:center;padding:4rem 1rem}
+.empt{font-size:18px;font-weight:600;margin-bottom:10px}
+.emps{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:1.5rem}
+.prog{width:100%;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-top:16px;max-width:300px;margin-left:auto;margin-right:auto}
+.progi{height:100%;background:var(--blue);border-radius:2px;transition:width .3s}
+.prgt{font-size:12px;color:var(--text3);margin-top:8px;text-align:center}
+
+/* Drill-down modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:100;display:flex;align-items:flex-end;justify-content:center}
+@media(min-width:640px){.overlay{align-items:center}}
+.modal{background:var(--surface);border-radius:16px 16px 0 0;width:100%;max-width:720px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 -4px 32px rgba(0,0,0,.15)}
+@media(min-width:640px){.modal{border-radius:16px;max-height:80vh}}
+.modal-hd{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.modal-title{font-size:16px;font-weight:600}
+.modal-sub{font-size:13px;color:var(--text2);margin-top:2px}
+.modal-body{overflow-y:auto;flex:1;padding:0}
+.lead-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:14px 1.5rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s}
+.lead-row:last-child{border-bottom:none}
+.lead-row:hover{background:var(--surface2)}
+.lead-name{font-size:14px;font-weight:600;margin-bottom:3px}
+.lead-phone{font-size:13px;color:var(--text2);margin-bottom:6px}
+.lead-tags{display:flex;flex-wrap:wrap;gap:4px}
+.lead-tag{font-size:11px;padding:2px 7px;background:var(--surface2);border-radius:4px;color:var(--text2);font-weight:500}
+.lead-date{font-size:12px;color:var(--text3);text-align:right;white-space:nowrap}
+.lead-link{font-size:12px;color:var(--blue);text-align:right;margin-top:4px;text-decoration:none;font-weight:500}
+.modal-search{padding:12px 1.5rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.modal-search input{width:100%;font-size:14px;padding:8px 12px;border:1px solid var(--border2);border-radius:8px;background:var(--surface2);color:var(--text);outline:none}
+.modal-search input:focus{border-color:var(--blue);background:var(--surface)}
+
+/* Footer */
+.ft{font-size:11px;color:var(--text3);text-align:center;margin-top:2rem;padding-bottom:1rem}
 </style>
 </head>
 <body>
 <div class="app" id="root"></div>
 <script>
-const{useState,useMemo,useCallback,useEffect}=React;
-
+const{useState,useMemo,useCallback,useRef}=React;
+const e=React.createElement;
 
 const EXCLUDED=new Set(["deletar","WhatsAppsInválidos","TESTE"]);
 const INTERNAL=new Set(["Fornecedor","SEBRAE","ARQUITETOS","Interno","Plataforma"]);
 const STATUS=new Set(["Vendas","Qualificado","Desqualificado","Sem Interesse","Cliente","Fechados","LEAD"]);
 const SECTOR=new Set(["Setor Restaurante","Setor Restaurantes II","Restaurantes","Clínicas","Saúde e estética","Franquia","Franquias","Petshop e Clínica Veterinária","Vestuário","Produtos Naturais","Quiosque","Confeitarias e Docerias","Airbnb (locação)","Prédio comercial","Imobiliária","Papelarias e Afins","Padaria","Fachada","Cosméticos e Produtos de beleza","sorveteria","Distribuidora","Espaço instagramável","Material de construção e obra","Suplementos","Comercial","Escolas e Rede de Ensino","Fluxo IA para Restaurantes","IA","Recepção","Visualizou o site"]);
 const CHANNELS={"Inbound":["Inbound"],"Outbound/SDR":["Outbound","SDR"],"Paid Ads":["Google Ads","Meta Ads"],"Agendor":["Agendor"],"Black Friday":["blackfriday25"],"Reativação":["Reativação"],"Indicação":["Indicado","Instagram"]};
-const CH_COLOR={"Inbound":"#3266ad","Outbound/SDR":"#d85a30","Paid Ads":"#1d9e75","Agendor":"#7f77dd","Black Friday":"#ba7517","Reativação":"#3b6d11","Indicação":"#185fa5","Sem tag":"#888780","Outros":"#b4b2a9"};
-const INT_COLOR=["#7f77dd","#185fa5","#1d9e75","#d85a30","#888780"];
+const CH_COLOR={"Inbound":"#3266ad","Outbound/SDR":"#d85a30","Paid Ads":"#1d9e75","Agendor":"#7f77dd","Black Friday":"#ba7517","Reativação":"#3b6d11","Indicação":"#185fa5","Sem tag":"#aaa","Outros":"#c8c6c2"};
+const INT_COLOR=["#7f77dd","#185fa5","#1d9e75","#d85a30","#888"];
 const INT_TAGS=["Fornecedor","SEBRAE","ARQUITETOS","Interno","Plataforma"];
 const ALL_CH=[...Object.keys(CHANNELS),"Sem tag","Outros"];
 const MS=["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago","Set","Out","Nov","Dez"];
@@ -91,6 +153,7 @@ function classify(tags){
 }
 function ym(d){return d?.slice(0,7)||"";}
 function fmtM(s){if(!s)return"";const[y,m]=s.split("-");return`${MS[+m-1]}/${y.slice(2)}`;}
+function fmtDate(s){if(!s)return"";const d=new Date(s);return d.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"2-digit"});}
 
 function proc(data,from,to){
   let rows=data;
@@ -107,16 +170,21 @@ function proc(data,from,to){
   const thisM=pipe.filter(s=>(s.created_at||"").startsWith(curYM)).length;
   const lastM=pipe.filter(s=>(s.created_at||"").startsWith(prvYM)).length;
   const mom=lastM>0?+((thisM-lastM)/lastM*100).toFixed(1):null;
-  const appt=pipe.filter(s=>{const v=s.variables||{};return v.DiaAgendamento;}).length;
+
   const chC={},stC={},secC={},intC={};
+  const chLeads={},stLeads={},secLeads={},intLeads={};
   pipe.forEach(s=>{
-    const c=classify(s.tags);chC[c]=(chC[c]||0)+1;
+    const c=classify(s.tags);
+    chC[c]=(chC[c]||0)+1;
+    if(!chLeads[c])chLeads[c]=[];chLeads[c].push(s);
     (s.tags||[]).forEach(t=>{
-      if(STATUS.has(t))stC[t]=(stC[t]||0)+1;
-      if(SECTOR.has(t))secC[t]=(secC[t]||0)+1;
+      if(STATUS.has(t)){stC[t]=(stC[t]||0)+1;if(!stLeads[t])stLeads[t]=[];stLeads[t].push(s);}
+      if(SECTOR.has(t)){secC[t]=(secC[t]||0)+1;if(!secLeads[t])secLeads[t]=[];secLeads[t].push(s);}
     });
   });
-  intr.forEach(s=>(s.tags||[]).forEach(t=>{if(INTERNAL.has(t))intC[t]=(intC[t]||0)+1;}));
+  intr.forEach(s=>(s.tags||[]).forEach(t=>{
+    if(INTERNAL.has(t)){intC[t]=(intC[t]||0)+1;if(!intLeads[t])intLeads[t]=[];intLeads[t].push(s);}
+  }));
   const mmMap={};
   pipe.forEach(s=>{
     const m=ym(s.created_at);if(!m)return;
@@ -130,20 +198,50 @@ function proc(data,from,to){
     (s.tags||[]).forEach(t=>{if(INTERNAL.has(t))mmMap[m]["i_"+t]=(mmMap[m]["i_"+t]||0)+1;});
   });
   const monthly=Object.values(mmMap).sort((a,b)=>a.m.localeCompare(b.m));
-  return{total:valid.length,pipeline:pipe.length,internal:intr.length,excluded:excl.length,thisM,lastM,mom,appt,chC,stC,secC,intC,monthly,months:monthly.map(m=>m.m)};
+  return{total:valid.length,pipeline:pipe.length,internal:intr.length,excluded:excl.length,
+    thisM,lastM,mom,chC,stC,secC,intC,chLeads,stLeads,secLeads,intLeads,monthly,months:monthly.map(m=>m.m)};
 }
 
-const TT=({active,payload,label})=>{
-  if(!active||!payload?.length)return null;
-  return React.createElement("div",{style:{background:"#fff",border:"1px solid rgba(0,0,0,.12)",borderRadius:8,padding:"6px 10px",fontSize:11,boxShadow:"0 2px 8px rgba(0,0,0,.08)"}},
-    React.createElement("div",{style:{fontWeight:500,marginBottom:4}},fmtM(label)||label),
-    payload.filter(p=>p.value>0).map(p=>React.createElement("div",{key:p.dataKey,style:{display:"flex",gap:8,alignItems:"center",color:"#666",marginBottom:2}},
-      React.createElement("span",{style:{width:8,height:8,borderRadius:1,background:p.fill,display:"inline-block"}}),
-      React.createElement("span",null,p.name||p.dataKey,": "),
-      React.createElement("span",{style:{fontWeight:500,color:"#111"}},p.value)
-    ))
+// Drill-down modal
+function Modal({title,leads,onClose}){
+  const[q,setQ]=useState("");
+  const filtered=q?leads.filter(l=>(l.full_name||"").toLowerCase().includes(q.toLowerCase())||(l.phone||"").includes(q)):leads;
+  const sorted=[...filtered].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+  return e("div",{className:"overlay",onClick:e=>{if(e.target===e.currentTarget)onClose()}},
+    e("div",{className:"modal"},
+      e("div",{className:"modal-hd"},
+        e("div",null,
+          e("div",{className:"modal-title"},title),
+          e("div",{className:"modal-sub"},`${leads.length} leads`)
+        ),
+        e("button",{onClick:onClose,style:{padding:"6px 12px"}},"✕ Fechar")
+      ),
+      e("div",{className:"modal-search"},
+        e("input",{type:"text",placeholder:"Buscar por nome ou telefone...",value:q,onChange:ev=>setQ(ev.target.value),autoFocus:true})
+      ),
+      e("div",{className:"modal-body"},
+        sorted.map(l=>e("div",{key:l.id,className:"lead-row"},
+          e("div",null,
+            e("div",{className:"lead-name"},l.full_name||"Sem nome"),
+            e("div",{className:"lead-phone"},l.phone||"—"),
+            e("div",{className:"lead-tags"},
+              (l.tags||[]).map(t=>e("span",{key:t,className:"lead-tag"},t))
+            )
+          ),
+          e("div",null,
+            e("div",{className:"lead-date"},fmtDate(l.created_at)),
+            l.live_chat&&e("a",{
+              href:`https://backend.botconversa.com.br/${l.live_chat}`,
+              target:"_blank",rel:"noopener noreferrer",
+              className:"lead-link",
+              onClick:ev=>ev.stopPropagation()
+            },"Ver conversa →")
+          )
+        ))
+      )
+    )
   );
-};
+}
 
 function App(){
   const[data,setData]=useState(null);
@@ -156,13 +254,14 @@ function App(){
   const[to,setTo]=useState("");
   const[cmp,setCmp]=useState(["",""]);
   const[lastUpd,setLastUpd]=useState(null);
+  const[drill,setDrill]=useState(null); // {title, leads}
 
-  const loadFile=useCallback(e=>{
-    const f=e.target.files[0];if(!f)return;
+  const loadFile=useCallback(ev=>{
+    const f=ev.target.files[0];if(!f)return;
     setLoading(true);
     const r=new FileReader();
-    r.onload=ev=>{
-      try{const j=JSON.parse(ev.target.result);setData(Array.isArray(j)?j:j.results||[]);setErr(null);setLastUpd(new Date());}
+    r.onload=e=>{
+      try{const j=JSON.parse(e.target.result);setData(Array.isArray(j)?j:j.results||[]);setErr(null);setLastUpd(new Date());}
       catch{setErr("Erro ao parsear JSON.");}
       setLoading(false);
     };
@@ -178,13 +277,10 @@ function App(){
         if(!res.ok)throw new Error(`HTTP ${res.status}`);
         const j=await res.json();
         if(j.error)throw new Error(j.error);
-        const rows=j.results||j;
-        all.push(...rows);
+        const rows=j.results||j;all.push(...rows);
         if(!tot&&j.count)tot=j.count;
-        if(tot)setProgress(Math.round((all.length/tot)*100));
-        setTotal(all.length);
-        if(!j.next||!rows.length)break;
-        page++;
+        if(tot){setProgress(Math.round(all.length/tot*100));setTotal(all.length);}
+        if(!j.next||!rows.length)break;page++;
       }
       setData(all);setErr(null);setLastUpd(new Date());
     }catch(e){setErr(`Erro: ${e.message}`);}
@@ -192,7 +288,6 @@ function App(){
   },[]);
 
   const p=useMemo(()=>data?proc(data,from,to):null,[data,from,to]);
-
   const comparison=useMemo(()=>{
     if(!p||!cmp[0]||!cmp[1])return null;
     const[m1,m2]=[...cmp].sort();
@@ -201,39 +296,42 @@ function App(){
     return ALL_CH.map(ch=>({ch,v1:d1[ch]||0,v2:d2[ch]||0})).filter(r=>r.v1||r.v2);
   },[p,cmp]);
 
-  const e=React.createElement;
+  const openDrill=(title,leads)=>setDrill({title,leads:leads||[]});
 
-  if(!data||loading)return e("div",null,
+  if(!data||loading)return e("div",{className:"app"},
     e("div",{className:"hd"},e("div",{className:"logo"},"BotConversa ",e("span",null,"/ Arquiter"))),
     e("div",{className:"cd"},
       e("div",{className:"emp"},
-        e("div",{style:{fontSize:28,marginBottom:10}},"📊"),
+        e("div",{style:{fontSize:32,marginBottom:12}},"📊"),
         e("div",{className:"empt"},"BotConversa Dashboard"),
-        e("div",{className:"emps"},loading?`Carregando dados... ${total>0?total+" registros":""}`:"Busque os dados via API ou carregue um arquivo JSON exportado."),
+        e("div",{className:"emps"},loading?`Carregando dados${total>0?` — ${total} registros`:""}...`:"Busque os dados via API ou carregue um arquivo JSON exportado."),
         loading&&e("div",null,
-          e("div",{className:"prog"},e("div",{className:"progi",style:{width:`${progress||5}%`}})),
-          e("div",{className:"prgt"},progress?`${progress}%`:"iniciando...")
+          e("div",{className:"prog"},e("div",{className:"progi",style:{width:`${progress||4}%`}})),
+          e("div",{className:"prgt"},progress?`${progress}% — ${total} leads`:"iniciando...")
         ),
-        !loading&&e("div",{style:{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}},
-          e("button",{onClick:loadAPI,style:{fontWeight:500}},"⚡ Buscar via API"),
+        !loading&&e("div",{style:{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap",marginTop:8}},
+          e("button",{onClick:loadAPI,className:"primary"},"⚡ Buscar via API"),
           e("label",{style:{cursor:"pointer"}},
             e("input",{type:"file",accept:".json",onChange:loadFile,style:{display:"none"}}),
             e("button",{style:{pointerEvents:"none"}},"📁 Carregar JSON local")
           )
         ),
-        err&&e("div",{style:{color:"#d85a30",fontSize:12,marginTop:12,lineHeight:1.5,padding:"8px 12px",background:"rgba(216,90,48,.08)",borderRadius:6}},err)
+        err&&e("div",{style:{color:"#d85a30",fontSize:13,marginTop:14,padding:"10px 16px",background:"rgba(216,90,48,.07)",borderRadius:8,lineHeight:1.5}},err)
       )
     ),
     e("div",{className:"ft"},"Arquiter · BotConversa Dashboard")
   );
 
   const chArr=Object.entries(p.chC).sort((a,b)=>b[1]-a[1]);
+  const maxM=Math.max(...p.monthly.map(x=>x.total||0),1);
 
-  return e("div",null,
+  return e("div",{className:"app"},
+    drill&&e(Modal,{title:drill.title,leads:drill.leads,onClose:()=>setDrill(null)}),
+
     e("div",{className:"hd"},
       e("div",{className:"logo"},"BotConversa ",e("span",null,"/ Arquiter")),
       e("div",{className:"hd-right"},
-        lastUpd&&e("span",{style:{fontSize:10,color:"var(--text3)"}},`Atualizado ${lastUpd.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`),
+        lastUpd&&e("span",{className:"upd"},`Atualizado ${lastUpd.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`),
         e("button",{onClick:loadAPI},"⚡ Refresh"),
         e("label",{style:{cursor:"pointer"}},
           e("input",{type:"file",accept:".json",onChange:loadFile,style:{display:"none"}}),
@@ -243,18 +341,29 @@ function App(){
     ),
 
     e("div",{className:"flt"},
-      e("span",{className:"fl2"},"Período:"),
+      e("label",null,"Período:"),
       e("input",{type:"date",value:from,onChange:ev=>setFrom(ev.target.value)}),
-      e("span",{className:"fl2"},"até"),
+      e("label",null,"até"),
       e("input",{type:"date",value:to,onChange:ev=>setTo(ev.target.value)}),
       (from||to)&&e("button",{onClick:()=>{setFrom("");setTo("")}},"× Limpar")
     ),
 
-    e("div",{className:"g4"},
-      e("div",{className:"mc"},e("div",{className:"ml"},"Leads válidos"),e("div",{className:"mv"},p.pipeline.toLocaleString("pt-BR")),e("div",{className:"ms"},`${p.excluded} excluídos`)),
-      e("div",{className:"mc"},e("div",{className:"ml"},"Novos este mês"),e("div",{className:"mv"},p.thisM),e("div",{className:"ms"},`vs ${p.lastM} mês anterior`)),
-      e("div",{className:"mc"},e("div",{className:"ml"},"Variação MoM"),e("div",{className:`mv ${p.mom>0?"up":p.mom<0?"dn":""}`},p.mom!==null?`${p.mom>0?"+":""}${p.mom}%`:"—"),e("div",{className:"ms"},"crescimento mensal")),
-      e("div",{className:"mc"},e("div",{className:"ml"},"Com agendamento"),e("div",{className:"mv"},p.appt),e("div",{className:"ms"},`${p.pipeline>0?((p.appt/p.pipeline)*100).toFixed(1):0}% da base`))
+    e("div",{className:"g4",style:{gridTemplateColumns:"repeat(3,minmax(0,1fr))"}},
+      e("div",{className:"mc"},
+        e("div",{className:"ml"},"Leads válidos"),
+        e("div",{className:"mv"},p.pipeline.toLocaleString("pt-BR")),
+        e("div",{className:"ms"},`${p.excluded} excluídos da análise`)
+      ),
+      e("div",{className:"mc"},
+        e("div",{className:"ml"},"Novos este mês"),
+        e("div",{className:"mv"},p.thisM),
+        e("div",{className:"ms"},`vs ${p.lastM} no mês anterior`)
+      ),
+      e("div",{className:"mc"},
+        e("div",{className:"ml"},"Variação MoM"),
+        e("div",{className:`mv ${p.mom>0?"up":p.mom<0?"dn":""}`},p.mom!==null?`${p.mom>0?"+":""}${p.mom}%`:"—"),
+        e("div",{className:"ms"},"crescimento mensal")
+      )
     ),
 
     e("div",{className:"tabs"},
@@ -263,10 +372,12 @@ function App(){
       )
     ),
 
+    // PIPELINE TAB
     tab==="pipeline"&&e("div",{className:"g2"},
       e("div",{className:"cd"},
         e("div",{className:"sl"},"Canais de aquisição"),
-        chArr.map(([name,val])=>e("div",{key:name,className:"cr"},
+        e("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:12,marginTop:-8}},"Clique para ver os leads"),
+        chArr.map(([name,val])=>e("div",{key:name,className:"cr",onClick:()=>openDrill(name,p.chLeads[name])},
           e("div",{className:"cn"},name),
           e("div",{className:"tk"},e("div",{className:"fl",style:{width:`${(val/p.pipeline)*100}%`,background:CH_COLOR[name]||"#888"}})),
           e("div",{className:"cv"},val),
@@ -275,47 +386,53 @@ function App(){
       ),
       e("div",{className:"cd"},
         e("div",{className:"sl"},"Status dos leads"),
-        Object.entries(p.stC).sort((a,b)=>b[1]-a[1]).map(([t,c])=>e("div",{key:t,className:"sr2"},
-          e("span",{style:{fontSize:13}},t),
-          e("span",{style:{fontSize:13,fontWeight:500}},c)
+        e("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:12,marginTop:-8}},"Clique para ver os leads"),
+        Object.entries(p.stC).sort((a,b)=>b[1]-a[1]).map(([t,c])=>e("div",{key:t,className:"sr2",style:{cursor:"pointer",borderRadius:6,padding:"10px 8px",margin:"0 -8px"},
+          onClick:()=>openDrill(t,p.stLeads[t]),
+          onMouseEnter:ev=>ev.currentTarget.style.background="var(--surface2)",
+          onMouseLeave:ev=>ev.currentTarget.style.background="transparent"
+        },
+          e("span",{style:{fontSize:14,fontWeight:500}},t),
+          e("span",{style:{fontSize:15,fontWeight:600}},c)
         )),
-        !Object.keys(p.stC).length&&e("div",{style:{fontSize:12,color:"var(--text3)"}},"Sem dados de status")
+        !Object.keys(p.stC).length&&e("div",{style:{fontSize:13,color:"var(--text3)"}},"Sem dados de status")
       )
     ),
 
+    // MENSAL TAB
     tab==="mensal"&&e("div",null,
       e("div",{className:"cd"},
         e("div",{className:"sl"},"Volume mensal total"),
-        p.monthly.map(m=>{
-          const max=Math.max(...p.monthly.map(x=>x.total||0),1);
-          return e("div",{key:m.m,className:"cr"},
-            e("div",{className:"cn"},fmtM(m.m)),
-            e("div",{className:"tk"},e("div",{className:"fl",style:{width:`${Math.round((m.total||0)/max*100)}%`,background:"#3266ad"}})),
-            e("div",{className:"cv"},m.total||0)
-          );
-        })
+        p.monthly.map(m=>e("div",{key:m.m,className:"mbar-row"},
+          e("div",{className:"mbar-label"},fmtM(m.m)),
+          e("div",{className:"mbar-track"},
+            e("div",{style:{width:`${Math.round((m.total||0)/maxM*100)}%`,background:"#3266ad",borderRadius:5,transition:"width .5s"}})
+          ),
+          e("div",{className:"mbar-val"},m.total||0)
+        ))
       ),
       e("div",{className:"cd"},
         e("div",{className:"sl"},"Por canal × mês"),
         e("div",{className:"lrow"},ALL_CH.map(ch=>e("div",{key:ch,className:"li"},e("span",{className:"lsq",style:{background:CH_COLOR[ch]}}),ch))),
-        p.monthly.map(m=>e("div",{key:m.m,style:{marginBottom:10}},
-          e("div",{style:{fontSize:11,color:"var(--text2)",marginBottom:4}},fmtM(m.m)),
-          e("div",{style:{display:"flex",height:16,borderRadius:3,overflow:"hidden",background:"var(--surface2)"}},
-            ALL_CH.filter(ch=>m[ch]>0).map(ch=>e("div",{key:ch,title:`${ch}: ${m[ch]}`,style:{width:`${Math.round((m[ch]||0)/(m.total||1)*100)}%`,background:CH_COLOR[ch],minWidth:2}}))
+        p.monthly.map(m=>e("div",{key:m.m,style:{marginBottom:12}},
+          e("div",{style:{fontSize:13,color:"var(--text2)",marginBottom:5,fontWeight:500}},fmtM(m.m)," ",e("span",{style:{color:"var(--text3)",fontWeight:400}},`(${m.total||0})`)),
+          e("div",{style:{display:"flex",height:20,borderRadius:5,overflow:"hidden",background:"var(--surface2)"}},
+            ALL_CH.filter(ch=>m[ch]>0).map(ch=>e("div",{key:ch,title:`${ch}: ${m[ch]}`,style:{width:`${Math.round((m[ch]||0)/(m.total||1)*100)}%`,background:CH_COLOR[ch],minWidth:3}}))
           )
         ))
       )
     ),
 
+    // COMPARAÇÃO TAB
     tab==="comparacao"&&e("div",null,
-      e("div",{className:"cd",style:{marginBottom:10}},
+      e("div",{className:"cd",style:{marginBottom:12}},
         e("div",{className:"sl"},"Selecione dois meses para comparar"),
-        e("div",{style:{display:"flex",gap:10,alignItems:"center",flexWrap:"wrap"}},
+        e("div",{style:{display:"flex",gap:12,alignItems:"center",flexWrap:"wrap"}},
           e("select",{value:cmp[0],onChange:ev=>setCmp([ev.target.value,cmp[1]])},
             e("option",{value:""},"Mês 1"),
             p.months.map(m=>e("option",{key:m,value:m},fmtM(m)))
           ),
-          e("span",{style:{fontSize:12,color:"var(--text2)"}},"vs"),
+          e("span",{style:{fontSize:14,color:"var(--text2)",fontWeight:500}},"vs"),
           e("select",{value:cmp[1],onChange:ev=>setCmp([cmp[0],ev.target.value])},
             e("option",{value:""},"Mês 2"),
             p.months.map(m=>e("option",{key:m,value:m},fmtM(m)))
@@ -325,31 +442,33 @@ function App(){
       comparison?e("div",{className:"cd"},
         e("div",{className:"sl"},`${fmtM([...cmp].sort()[0])} vs ${fmtM([...cmp].sort()[1])}`),
         comparison.map(r=>e("div",{key:r.ch,className:"cmpr"},
-          e("span",{style:{fontSize:11,color:"var(--text2)"}},r.ch),
+          e("span",{style:{fontSize:13,color:"var(--text2)",fontWeight:500}},r.ch),
           e("span",{className:"cmv",style:{color:"var(--text2)"}},r.v1),
-          e("span",{style:{fontSize:10,color:"var(--text3)",textAlign:"center"}},"→"),
+          e("span",{style:{fontSize:13,color:"var(--text3)",textAlign:"center"}},"→"),
           e("span",{className:"cmv"},r.v2),
           e("span",{className:`bdg ${r.v2>r.v1?"bup":r.v2<r.v1?"bdn":"bnt"}`},`${r.v2>r.v1?"+":""}${r.v2-r.v1}`)
         ))
-      ):e("div",{className:"cd",style:{textAlign:"center",padding:"2rem",color:"var(--text3)",fontSize:13}},"Selecione dois meses acima")
+      ):e("div",{className:"cd",style:{textAlign:"center",padding:"3rem",color:"var(--text3)",fontSize:14}},"Selecione dois meses acima para ver a comparação")
     ),
 
+    // BASE INTERNA TAB
     tab==="internos"&&e("div",{className:"g2"},
       e("div",{className:"cd"},
         e("div",{className:"sl"},"Base interna Arquiter"),
+        e("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:12,marginTop:-8}},"Clique para ver os contatos"),
         INT_TAGS.map((tag,i)=>{
           const c=p.intC[tag]||0;
           const max=Math.max(...INT_TAGS.map(t=>p.intC[t]||0),1);
-          return e("div",{key:tag,className:"cr"},
+          return e("div",{key:tag,className:"cr",onClick:()=>openDrill(tag,p.intLeads[tag]||[])},
             e("div",{className:"cn"},tag),
             e("div",{className:"tk"},e("div",{className:"fl",style:{width:`${(c/max)*100}%`,background:INT_COLOR[i]}})),
             e("div",{className:"cv"},c),
             e("div",{className:"cp"},`${p.internal>0?((c/p.internal)*100).toFixed(0):0}%`)
           );
         }),
-        e("div",{style:{marginTop:12,paddingTop:10,borderTop:"1px solid var(--border)",display:"flex",justifyContent:"space-between"}},
-          e("span",{style:{fontSize:12,color:"var(--text2)"}},"Total base interna"),
-          e("span",{style:{fontSize:15,fontWeight:500}},p.internal)
+        e("div",{style:{marginTop:14,paddingTop:12,borderTop:"1px solid var(--border)",display:"flex",justifyContent:"space-between"}},
+          e("span",{style:{fontSize:13,color:"var(--text2)",fontWeight:500}},"Total base interna"),
+          e("span",{style:{fontSize:17,fontWeight:600}},p.internal)
         )
       ),
       e("div",{className:"cd"},
@@ -358,26 +477,28 @@ function App(){
         p.monthly.map(m=>{
           const tot=INT_TAGS.reduce((s,t)=>s+(m["i_"+t]||0),0);
           return tot>0?e("div",{key:m.m,style:{marginBottom:10}},
-            e("div",{style:{fontSize:11,color:"var(--text2)",marginBottom:4}},fmtM(m.m)),
-            e("div",{style:{display:"flex",height:14,borderRadius:3,overflow:"hidden",background:"var(--surface2)"}},
-              INT_TAGS.map((t,i)=>{ const v=m["i_"+t]||0; return v>0?e("div",{key:t,title:`${t}: ${v}`,style:{width:`${Math.round(v/tot*100)}%`,background:INT_COLOR[i],minWidth:2}}):null;})
+            e("div",{style:{fontSize:13,color:"var(--text2)",marginBottom:5,fontWeight:500}},fmtM(m.m)),
+            e("div",{style:{display:"flex",height:18,borderRadius:4,overflow:"hidden",background:"var(--surface2)"}},
+              INT_TAGS.map((t,i)=>{const v=m["i_"+t]||0;return v>0?e("div",{key:t,title:`${t}: ${v}`,style:{width:`${Math.round(v/tot*100)}%`,background:INT_COLOR[i],minWidth:3}}):null;})
             )
           ):null;
         })
       )
     ),
 
+    // SETORES TAB
     tab==="setores"&&e("div",{className:"cd"},
       e("div",{className:"sl"},"Segmentação por setor"),
+      e("div",{style:{fontSize:11,color:"var(--text3)",marginBottom:12,marginTop:-8}},"Clique para ver os leads"),
       Object.entries(p.secC).sort((a,b)=>b[1]-a[1]).map(([tag,count])=>{
         const max=Math.max(...Object.values(p.secC),1);
-        return e("div",{key:tag,className:"cr"},
-          e("div",{className:"cn",style:{width:220,fontSize:11}},tag),
+        return e("div",{key:tag,className:"cr",onClick:()=>openDrill(tag,p.secLeads[tag]||[])},
+          e("div",{className:"cn",style:{width:230,fontSize:13}},tag),
           e("div",{className:"tk"},e("div",{className:"fl",style:{width:`${(count/max)*100}%`,background:"#1d9e75"}})),
           e("div",{className:"cv"},count)
         );
       }),
-      !Object.keys(p.secC).length&&e("div",{style:{fontSize:12,color:"var(--text3)",textAlign:"center",padding:"1.5rem"}},"Sem dados de setor")
+      !Object.keys(p.secC).length&&e("div",{style:{fontSize:13,color:"var(--text3)",textAlign:"center",padding:"2rem"}},"Sem dados de setor")
     ),
 
     e("div",{className:"ft"},`Arquiter · BotConversa Dashboard · ${new Date().toLocaleDateString("pt-BR")}`)
